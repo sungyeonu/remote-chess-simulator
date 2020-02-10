@@ -1,17 +1,17 @@
 package ChessGame.Position;
 
-import ChessGame.Piece.AbstractPiece;
+import ChessGame.Piece.Piece;
 
 public class AbstractPosition {
     protected int x;
     protected int y;
-    AbstractPiece piece;
+    Piece piece;
     boolean empty;
     public AbstractPosition(int x, int y){
         this.x = x;
         this.y = y;
     }
-    public void setPiece(AbstractPiece piece){
+    public void setPiece(Piece piece){
         this.piece = piece;
     }
     public boolean isEmpty(){
@@ -26,7 +26,7 @@ public class AbstractPosition {
     public int getY(){
         return y;
     }
-    public AbstractPiece getPiece(){
+    public Piece getPiece(){
         return piece;
     }
 }

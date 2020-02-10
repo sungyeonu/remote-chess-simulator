@@ -2,7 +2,7 @@ package ChessGame.Piece;
 
 import ChessGame.ColorEnum;
 
-public class King extends AbstractPiece{
+public class King extends Piece {
     public King(ColorEnum color) {
         super(color);
     }

@@ -4,7 +4,7 @@ import ChessGame.ChessBoard;
 import ChessGame.ColorEnum;
 import ChessGame.Position.AbstractPosition;
 
-public class Queen extends AbstractPiece{
+public class Queen extends Piece {
     public Queen(ColorEnum color) {
         super(color);
     }

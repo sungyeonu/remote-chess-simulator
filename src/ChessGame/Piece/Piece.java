@@ -5,14 +5,14 @@ import ChessGame.Position.AbstractPosition;
 import ChessGame.ColorEnum;
 import java.util.ArrayList;
 
-public abstract class AbstractPiece {
+public abstract class Piece {
     protected ColorEnum color;
     protected String id;
     protected String name;
     protected AbstractPosition position;
     protected boolean hasMoved = false;
 
-    public AbstractPiece(ColorEnum color){
+    public Piece(ColorEnum color){
         this.color = color;
     }
     public void initPiece(AbstractPosition position){

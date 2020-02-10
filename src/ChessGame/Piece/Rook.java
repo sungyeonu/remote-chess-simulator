@@ -6,7 +6,7 @@ import ChessGame.Position.AbstractPosition;
 
 import java.util.ArrayList;
 
-public class Rook extends AbstractPiece{
+public class Rook extends Piece {
     public Rook(ColorEnum color) {
         super(color);
     }
@@ -20,47 +20,54 @@ public class Rook extends AbstractPiece{
         Coord from = new Coord(row, col);
         int dy = 1;
         int dx = 1;
-        for (int c = col-1; c >= 0; c--) {
-            if (grid[row][c].isEmpty())
-                moveSet.add(new Move(cord, new Coord(row, c), null));
+        //checks left
+        for (int colCount = col-1; colCount >= 0; colCount--) {
+            if (grid[row][colCount].isEmpty())
+                moveSet.add(new Move(from, new Coord(row, colCount)));
             else {
-                if (board[row][c].isEnemy(player))
-                    moves.add(new Move(cord, new Coord(row, c), null));
-                break; //encountered own piece or enemy piece
+                if (grid[row][colCount].getPiece().getColor().getID() != color.getID())
+                    moveSet.add(new Move(from, new Coord(row, colCount)));
+                break; //encountered piece
             }
         }
-        for (int rowIndex = row; rowIndex < 8; rowIndex ++){
-            if(!(board.inBound(row, col + dy))){
-                break;
+        //checks right
+        for (int colCount = col+1; colCount <= 7; colCount++) {
+            if (grid[row][colCount].isEmpty())
+                moveSet.add(new Move(from, new Coord(row, colCount)));
+            else {
+                if (grid[row][colCount].getPiece().getColor().getID() != color.getID())
+                    moveSet.add(new Move(from, new Coord(row, colCount)));
+                break; //encountered piece
             }
-            AbstractPosition downPosition = board.getPosition(row, col + dy);
-            if (downPosition.isEmpty()){
-                Coord from = new Coord(row, col);
-                Coord to = new Coord(row, col + dy);
-                Move newMove = new Move(from, to);
-                moveSet.add(newMove);
-            } else if (downPosition.getPiece().getColor().getID() != color.getID()){
-                Coord from = new Coord(row, col);
-                Coord to = new Coord(row, col + dy);
-                Move newMove = new Move(from, to);
-                moveSet.add(newMove);
-                break;
-            } else if (downPosition.getPiece().getColor().getID() != color.getID()){
-                Coord from = new Coord(row, col);
-                Coord to = new Coord(row, col + dy);
-                Move newMove = new Move(from, to);
-                moveSet.add(newMove);
-                break;
         }
-    }
-
-    @Override
-    public void getMoveSet() {
-
+        //checks up
+        for (int rowCount = row-1; rowCount >= 0; rowCount--) {
+            if (grid[rowCount][col].isEmpty())
+                moveSet.add(new Move(from, new Coord(rowCount, col)));
+            else {
+                if (grid[rowCount][col].getPiece().getColor().getID() != color.getID())
+                    moveSet.add(new Move(from, new Coord(rowCount, col)));
+                break; //encountered piece
+            }
+        }
+        //checks down
+        for (int rowCount = row+1; rowCount <= 7; rowCount++) {
+            if (grid[rowCount][col].isEmpty())
+                moveSet.add(new Move(from, new Coord(rowCount, col)));
+            else {
+                if (grid[rowCount][col].getPiece().getColor().getID() != color.getID())
+                    moveSet.add(new Move(from, new Coord(rowCount, col)));
+                break; //encountered piece
+            }
+        }
+        /*
+        * To-Do Castling
+        * */
+        return moveSet;
     }
 
     @Override
     public ColorEnum getColor() {
-        return null;
+        return color;
     }
 }

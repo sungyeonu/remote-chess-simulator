@@ -1,26 +1,24 @@
 package ChessGame.Piece;
 
 import ChessGame.ColorEnum;
-import ChessGame.Piece.AbstractPiece;
-import ChessGame.Piece.Pawn;
 
 public class PieceFactory {
-    public AbstractPiece makePawn(ColorEnum color){
+    public Piece makePawn(ColorEnum color){
         return new Pawn(color);
     }
-    public AbstractPiece makeRook(ColorEnum color){
+    public Piece makeRook(ColorEnum color){
         return new Pawn(color);
     }
-    public AbstractPiece makeKnight(ColorEnum color){
+    public Piece makeKnight(ColorEnum color){
         return new Pawn(color);
     }
-    public AbstractPiece makeQueen(ColorEnum color){
+    public Piece makeQueen(ColorEnum color){
         return new Pawn(color);
     }
-    public AbstractPiece makeKing(ColorEnum color){
+    public Piece makeKing(ColorEnum color){
         return new Pawn(color);
     }
-    public AbstractPiece makeBishop(ColorEnum color){
+    public Piece makeBishop(ColorEnum color){
         return new Pawn(color);
     }
 }
