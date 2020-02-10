@@ -1,5 +1,6 @@
 package ChessGame.Piece;
 
+import ChessGame.ChessBoard;
 import ChessGame.ColorEnum;
 import ChessGame.Position.AbstractPosition;
 
@@ -9,8 +10,8 @@ public class Queen extends AbstractPiece{
     }
 
     @Override
-    public void getMoveSet() {
-        AbstractPosition postion [][] = ChessBoard.get
+    public void getMoveSet(ChessBoard board, AbstractPosition position) {
+
     }
 
     @Override

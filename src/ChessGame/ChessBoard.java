@@ -37,4 +37,15 @@ public class ChessBoard {
     public AbstractPosition[][] getBoard(){
         return grid;
     }
+
+    public AbstractPosition getPosition(int x, int y){
+        return grid[x][y];
+    }
+    public boolean inBound(int x, int y){
+        if (x >= 0 && x <= 7 && y>=0 && y<=7){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

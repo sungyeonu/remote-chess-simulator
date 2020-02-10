@@ -1,15 +1,15 @@
 package ChessGame.Piece;
 
 public class Move {
-    private int from, to;
-    public Move(int from, int to){
+    private Coord from, to;
+    public Move(Coord from, Coord to){
         this.from = from;
         this.to = to;
     }
-    public int getFrom(){
+    public Coord getFrom(){
         return from;
     }
-    public int getTo(){
+    public Coord getTo(){
         return to;
     }
 }

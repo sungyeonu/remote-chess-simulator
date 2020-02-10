@@ -9,7 +9,4 @@ public class PositionImpl extends AbstractPosition{
     public void removePiece(){
         this.piece = null;
     }
-    public void setPiece(AbstractPiece piece){
-        this.piece = piece;
-    }
 }

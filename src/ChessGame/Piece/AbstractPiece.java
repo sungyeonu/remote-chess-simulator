@@ -3,13 +3,14 @@ package ChessGame.Piece;
 import ChessGame.ChessBoard;
 import ChessGame.Position.AbstractPosition;
 import ChessGame.ColorEnum;
+import java.util.ArrayList;
 
 public abstract class AbstractPiece {
     protected ColorEnum color;
     protected String id;
     protected String name;
     protected AbstractPosition position;
-    protected boolean firstMove = true;
+    protected boolean hasMoved = false;
 
     public AbstractPiece(ColorEnum color){
         this.color = color;
@@ -17,9 +18,9 @@ public abstract class AbstractPiece {
     public void initPiece(AbstractPosition position){
         this.position = position;
     }
-    public abstract void getMoveSet(ChessBoard board, AbstractPosition position);
+    public abstract ArrayList<Move> getMoveSet(ChessBoard board, AbstractPosition position);
     public abstract ColorEnum getColor();
-    public void setFirstMove (boolean value){
-        firstMove = value;
+    public void setHasMoved (boolean value){
+        hasMoved = value;
     }
 }

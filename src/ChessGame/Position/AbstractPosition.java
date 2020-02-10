@@ -26,4 +26,7 @@ public class AbstractPosition {
     public int getY(){
         return y;
     }
+    public AbstractPiece getPiece(){
+        return piece;
+    }
 }
