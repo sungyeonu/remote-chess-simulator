@@ -25,34 +25,29 @@ public class Pawn extends AbstractPiece{
         AbstractPosition[][] grid = board.getBoard();
         int row = position.getX();
         int col = position.getY();
+        Coord from = new Coord(row, col);
         int left = -1;
         int right = 1;
-        AbstractPosition ahead = board.getPosition(row, row + offset);
         if (hasMoved == false){
-            Coord from = new Coord(row, col);
-            Coord to = new Coord(row + offset, col);
-            Move newMove = new Move(from, to);
+            Coord oneForward = new Coord(row + offset, col);
+            Move newMove = new Move(from, oneForward);
             moveSet.add(newMove);
-        }
-        if (ahead.isEmpty() && board.inBound(row + offset*2, col)){
-            Coord from = new Coord(row, col);
-            Coord to = new Coord(row + offset*2, col);
-            Move newMove = new Move(from, to);
+            Coord twoForward = new Coord(row + offset*2, col);
+            Move newMove2 = new Move(from, twoForward);
             moveSet.add(newMove);
+            moveSet.add(newMove2);
         }
         if (board.inBound(row + offset, col + left)){
-            AbstractPosition aheadAndLeft = board.getPosition(row, row + offset);
+            AbstractPosition aheadAndLeft = grid[row + offset][col+left];
             if (!(aheadAndLeft.isEmpty()) && aheadAndLeft.getPiece().getColor().getID() != color.getID()){
-                Coord from = new Coord(row, col);
                 Coord to = new Coord(row + offset, col + left);
                 Move newMove = new Move(from, to);
                 moveSet.add(newMove);
             }
         }
         if(board.inBound(row + offset, col + right)){
-            AbstractPosition aheadAndRight = board.getPosition(row, row + offset);
+            AbstractPosition aheadAndRight = grid[row + offset][col + right];
             if (!(aheadAndRight.isEmpty()) && aheadAndRight.getPiece().getColor().getID() != color.getID()){
-                Coord from = new Coord(row, col);
                 Coord to = new Coord(row + offset, col + right);
                 Move newMove = new Move(from, to);
                 moveSet.add(newMove);
