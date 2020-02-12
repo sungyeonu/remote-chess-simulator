@@ -21,35 +21,67 @@ public class Knight extends Piece {
 
         if (board.inBound(row - 1, col - 2)){
             if (grid[row - 1][col - 2].isEmpty()){
-                moveSet.add(new Move(from, new Coord(row - 1, col + 2)));
+                moveSet.add(new Move(from, new Coord(row - 1, col - 2)));
             } else if (grid[row - 1][col - 2].getPiece().getColor().getID() != color.getID()){
+                moveSet.add(new Move(from, new Coord(row - 1, col - 2)));
+            }
+        }
+
+        if (board.inBound(row - 1, col + 2)){
+            if (grid[row - 1][col + 2].isEmpty()){
+                moveSet.add(new Move(from, new Coord(row - 1, col + 2)));
+            } else if (grid[row - 1][col + 2].getPiece().getColor().getID() != color.getID()){
                 moveSet.add(new Move(from, new Coord(row - 1, col + 2)));
             }
         }
 
-        if (ChessBoard.validPosition(row-1, col-2) && board[row-1][col-2].isEmptyOrEnemy(player))
-            moves.add(new Move(cord, new Coord(row-1, col-2), null));
-        if (ChessBoard.validPosition(row-1, col+2) && board[row-1][col+2].isEmptyOrEnemy(player))
-            moves.add(new Move(cord, new Coord(row-1, col+2), null));
+        if (board.inBound(row + 1, col - 2)){
+            if (grid[row + 1][col - 2].isEmpty()){
+                moveSet.add(new Move(from, new Coord(row + 1, col - 2)));
+            } else if (grid[row - 1][col + 2].getPiece().getColor().getID() != color.getID()){
+                moveSet.add(new Move(from, new Coord(row + 1, col - 2)));
+            }
+        }
 
-        if (ChessBoard.validPosition(row+1, col-2) && board[row+1][col-2].isEmptyOrEnemy(player))
-            moves.add(new Move(cord, new Coord(row+1, col-2), null));
-        if (ChessBoard.validPosition(row+1, col+2) && board[row+1][col+2].isEmptyOrEnemy(player))
-            moves.add(new Move(cord, new Coord(row+1, col+2), null));
+        if (board.inBound(row + 1, col + 2)){
+            if (grid[row + 1][col + 2].isEmpty()){
+                moveSet.add(new Move(from, new Coord(row + 1, col + 2)));
+            } else if (grid[row + 1][col + 2].getPiece().getColor().getID() != color.getID()){
+                moveSet.add(new Move(from, new Coord(row + 1, col + 2)));
+            }
+        }
 
-        if (ChessBoard.validPosition(row-2, col+1) && board[row-2][col+1].isEmptyOrEnemy(player))
-            moves.add(new Move(cord, new Coord(row-2, col+1), null));
-        if (ChessBoard.validPosition(row-2, col-1) && board[row-2][col-1].isEmptyOrEnemy(player))
-            moves.add(new Move(cord, new Coord(row-2, col-1), null));
+        if (board.inBound(row - 2, col + 1)){
+            if (grid[row - 2][col + 1].isEmpty()){
+                moveSet.add(new Move(from, new Coord(row - 2, col + 1)));
+            } else if (grid[row - 2][col + 1].getPiece().getColor().getID() != color.getID()){
+                moveSet.add(new Move(from, new Coord(row - 2, col + 1)));
+            }
+        }
 
-        if (ChessBoard.validPosition(row+2, col+1) && board[row+2][col+1].isEmptyOrEnemy(player))
-            moves.add(new Move(cord, new Coord(row+2, col+1), null));
-        if (ChessBoard.validPosition(row+2, col-1) && board[row+2][col-1].isEmptyOrEnemy(player))
-            moves.add(new Move(cord, new Coord(row+2, col-1), null));
-        //
+        if (board.inBound(row - 2, col - 1)){
+            if (grid[row - 2][col - 1].isEmpty()){
+                moveSet.add(new Move(from, new Coord(row - 2, col - 1)));
+            } else if (grid[row - 2][col - 1].getPiece().getColor().getID() != color.getID()){
+                moveSet.add(new Move(from, new Coord(row - 2, col - 1)));
+            }
+        }
 
-        if(grid[row][])
+        if (board.inBound(row + 2, col + 1)){
+            if (grid[row + 2][col + 1].isEmpty()){
+                moveSet.add(new Move(from, new Coord(row + 2, col + 1)));
+            } else if (grid[row + 2][col + 1].getPiece().getColor().getID() != color.getID()){
+                moveSet.add(new Move(from, new Coord(row + 2, col + 1)));
+            }
+        }
 
+        if (board.inBound(row + 2, col - 1)){
+            if (grid[row + 2][col - 1].isEmpty()){
+                moveSet.add(new Move(from, new Coord(row + 2, col - 1)));
+            } else if (grid[row + 2][col - 1].getPiece().getColor().getID() != color.getID()){
+                moveSet.add(new Move(from, new Coord(row + 2, col - 1)));
+            }
+        }
         return moveSet;
     }
 

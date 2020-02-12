@@ -1,5 +1,6 @@
 package ChessGame;
 
+import ChessGame.Piece.Coord;
 import ChessGame.Piece.PieceFactory;
 import ChessGame.Position.AbstractPosition;
 import ChessGame.Position.PositionImpl;
@@ -12,7 +13,7 @@ public class ChessBoard {
     public void initBoard(){
         for (int i = 0 ; i < BOARD_COLS; i++){
             for (int j = 0 ; j < BOARD_ROWS; j++){
-                grid[i][j] = new PositionImpl(i,j);
+                grid[i][j] = new PositionImpl(new Coord(i,j));
             }
         }
     }

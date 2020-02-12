@@ -1,15 +1,14 @@
 package ChessGame.Position;
 
+import ChessGame.Piece.Coord;
 import ChessGame.Piece.Piece;
 
 public class AbstractPosition {
-    protected int x;
-    protected int y;
+    Coord coord;
     Piece piece;
     boolean empty;
-    public AbstractPosition(int x, int y){
-        this.x = x;
-        this.y = y;
+    public AbstractPosition(Coord coord){
+        this.coord = coord;
     }
     public void setPiece(Piece piece){
         this.piece = piece;
@@ -21,10 +20,10 @@ public class AbstractPosition {
             return false;
     }
     public int getX(){
-        return x;
+        return coord.getX();
     }
     public int getY(){
-        return y;
+        return coord.getY();
     }
     public Piece getPiece(){
         return piece;

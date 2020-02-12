@@ -18,8 +18,7 @@ public class Rook extends Piece {
         int row = position.getX();
         int col = position.getY();
         Coord from = new Coord(row, col);
-        int dy = 1;
-        int dx = 1;
+
         //checks left
         for (int colCount = col-1; colCount >= 0; colCount--) {
             if (grid[row][colCount].isEmpty())
