@@ -18,6 +18,7 @@ public class Knight extends Piece {
         int row = position.getX();
         int col = position.getY();
         Coord from = new Coord(row, col);
+
         if (board.inBound(row - 1, col - 2)){
             if (grid[row - 1][col - 2].isEmpty()){
                 moveSet.add(new Move(from, new Coord(row - 1, col + 2)));
