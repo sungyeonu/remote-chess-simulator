@@ -24,9 +24,9 @@ public class Client {
             out = new DataOutputStream(socket.getOutputStream());
         }
         catch(UnknownHostException u) {
-            System.out.println(u);
-        } catch(IOException i) {
-            System.out.println(i);
+            System.out.println(u.toString());
+        } catch(IOException e) {
+            System.out.println(e.toString());
         }
 
         // string to read message from input
@@ -39,9 +39,9 @@ public class Client {
                 line = input.readLine();
                 out.writeUTF(line);
             }
-            catch(IOException i)
+            catch(IOException e)
             {
-                System.out.println(i);
+                System.out.println(e.toString());
             }
         }
 
@@ -50,8 +50,8 @@ public class Client {
             input.close();
             out.close();
             socket.close();
-        } catch(IOException i) {
-            System.out.println(i);
+        } catch(IOException e) {
+            System.out.println(e.toString());
         }
     }
 
