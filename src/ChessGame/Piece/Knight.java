@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Knight extends Piece {
     public Knight(ColorEnum color) {
         super(color);
+        this.id = PieceIDEnum.KNIGHT;
     }
 
     @Override
@@ -85,8 +86,4 @@ public class Knight extends Piece {
         return moveSet;
     }
 
-    @Override
-    public ColorEnum getColor() {
-        return null;
-    }
 }

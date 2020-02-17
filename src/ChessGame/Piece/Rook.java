@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Rook extends Piece {
     public Rook(ColorEnum color) {
         super(color);
+        this.id = PieceIDEnum.ROOK;
     }
 
     @Override
@@ -65,8 +66,4 @@ public class Rook extends Piece {
         return moveSet;
     }
 
-    @Override
-    public ColorEnum getColor() {
-        return color;
-    }
 }

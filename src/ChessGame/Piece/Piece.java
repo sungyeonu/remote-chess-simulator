@@ -7,8 +7,7 @@ import java.util.ArrayList;
 
 public abstract class Piece {
     protected ColorEnum color;
-    protected String id;
-    protected String name;
+    protected PieceIDEnum id;
     protected AbstractPosition position;
     protected boolean hasMoved = false;
 
@@ -19,7 +18,12 @@ public abstract class Piece {
         this.position = position;
     }
     public abstract ArrayList<Move> getMoveSet(ChessBoard board, AbstractPosition position);
-    public abstract ColorEnum getColor();
+    public ColorEnum getColor(){
+        return color;
+    }
+    public PieceIDEnum getId(){
+        return id;
+    }
     public void setHasMoved (boolean value){
         hasMoved = value;
     }

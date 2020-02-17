@@ -5,13 +5,14 @@ import ChessGame.Piece.Piece;
 
 public class AbstractPosition {
     Coord coord;
-    Piece piece;
-    boolean empty;
+    Piece piece = null;
+    boolean empty = true;
     public AbstractPosition(Coord coord){
         this.coord = coord;
     }
     public void setPiece(Piece piece){
         this.piece = piece;
+        empty = false;
     }
     public boolean isEmpty(){
         if (empty == true){
@@ -26,6 +27,10 @@ public class AbstractPosition {
         return coord.getY();
     }
     public Piece getPiece(){
-        return piece;
+        if (piece != null){
+            return piece;
+        } else {
+            return null;
+        }
     }
 }

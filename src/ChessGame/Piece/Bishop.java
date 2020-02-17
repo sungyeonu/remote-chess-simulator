@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Bishop extends Piece {
     public Bishop(ColorEnum color) {
         super(color);
+        this.id = PieceIDEnum.BISHOP;
     }
 
     @Override
@@ -60,11 +61,5 @@ public class Bishop extends Piece {
             }
         }
         return moveSet;
-    }
-
-
-    @Override
-    public ColorEnum getColor() {
-        return color;
     }
 }

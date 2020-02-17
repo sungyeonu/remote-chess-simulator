@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Queen extends Piece {
     public Queen(ColorEnum color) {
         super(color);
+        this.id = PieceIDEnum.QUEEN;
     }
 
     @Override
@@ -25,9 +26,4 @@ public class Queen extends Piece {
         return moveSet;
     }
 
-
-    @Override
-    public ColorEnum getColor() {
-        return null;
-    }
 }

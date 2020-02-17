@@ -13,6 +13,7 @@ public class Pawn extends Piece {
 
     public Pawn(ColorEnum color){
         super(color);
+        this.id = PieceIDEnum.PAWN;
         if (color.getID() == 1){
             offset = -1;
         } else if (color.getID() == 2){
@@ -48,10 +49,5 @@ public class Pawn extends Piece {
         * En Passant
         * */
         return moveSet;
-    }
-
-    @Override
-    public ColorEnum getColor() {
-        return color;
     }
 }

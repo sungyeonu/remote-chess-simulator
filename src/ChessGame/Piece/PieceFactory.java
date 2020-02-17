@@ -7,18 +7,18 @@ public class PieceFactory {
         return new Pawn(color);
     }
     public Piece makeRook(ColorEnum color){
-        return new Pawn(color);
+        return new Rook(color);
     }
     public Piece makeKnight(ColorEnum color){
-        return new Pawn(color);
+        return new Knight(color);
     }
     public Piece makeQueen(ColorEnum color){
-        return new Pawn(color);
+        return new Queen(color);
     }
     public Piece makeKing(ColorEnum color){
-        return new Pawn(color);
+        return new King(color);
     }
     public Piece makeBishop(ColorEnum color){
-        return new Pawn(color);
+        return new Bishop(color);
     }
 }
