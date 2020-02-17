@@ -1,7 +1,7 @@
 package ChessGame.Piece;
 
 public enum PieceIDEnum {
-        PAWN("P"), ROOK("R"), KNIGHT("K"), BISHOP("B"), QUEEN("Q"), KING("A");
+        PAWN("pawn"), ROOK("rook"), KNIGHT("knight"), BISHOP("bishop"), QUEEN("queen"), KING("king");
     private String id;
     private PieceIDEnum(String id){
         this.id = id;

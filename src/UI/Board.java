@@ -1,10 +1,18 @@
 package UI;
 
+import ChessGame.ChessBoard;
+import ChessGame.ColorEnum;
+import ChessGame.Piece.Piece;
+import ChessGame.Piece.PieceIDEnum;
 import ChessGame.Position.AbstractPosition;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class Board extends JPanel {
@@ -20,20 +28,30 @@ public class Board extends JPanel {
     private final Dimension BOARD_PANEL_DIMENSON = new Dimension(WIDTH, HEIGHT);
     private final Dimension TILE_PANEL_DIMENSION = new Dimension(TILE_WIDTH, TILE_HEIGHT);
 
+    private final Color WHITE = new Color(255, 255,255);
+    private final Color BLUE = new Color(203, 241, 245);
+    private final Color GREEN = new Color(82,212,88);
+    private final Color RED = new Color(221,65,65);
+    private final Color DARK_BLUE = new Color(48,93,255);
+
+    private ChessBoard board;
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
-
-    private JButton[][] grid = new JButton[WIDTH][HEIGHT];
-
 
     public Board(){
         this.gameFrame = new JFrame("Chess");
         this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
-
+        this.board = new ChessBoard();
         this.boardPanel = new BoardPanel();
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
 
+        repaint();
+
         this.gameFrame.setVisible(true);
+    }
+
+    public void updateBoard(ChessBoard board){
+            this.board = board;
     }
 
     private class BoardPanel extends JPanel {
@@ -44,7 +62,7 @@ public class Board extends JPanel {
             this.squares = new SquarePanel[ROWS][COLS];
             for (int rows = 0; rows < ROWS; rows++) {
                 for (int cols = 0; cols < COLS; cols ++) {
-                    final SquarePanel squarePanel = new SquarePanel(this, rows, cols);
+                    final SquarePanel squarePanel = new SquarePanel(rows, cols);
                     squares[rows][cols] = squarePanel;
                     add(squarePanel);
                 }
@@ -57,21 +75,49 @@ public class Board extends JPanel {
             private final int row;
             private final int col;
 
-            SquarePanel(final BoardPanel boardPanel, final int row, final int col){
+            SquarePanel(final int row, final int col){
                 super(new GridBagLayout());
                 this.row = row;
                 this.col = col;
                 setPreferredSize(TILE_PANEL_DIMENSION);
                 assignTileColor();
+                assignTilePieceIcon(board);
                 validate();
             }
+
             private void assignTileColor(){
+                setBackground(row%2 == col%2 ? WHITE : BLUE);
+            }
+
+            private void assignTilePieceIcon(ChessBoard board){
+                this.removeAll();
+                try{
+                    AbstractPosition[][] grid = board.getBoard();
+                    if(!(grid[row][col].isEmpty())){
+                        Piece piece = board.getBoard()[row][col].getPiece();
+                        ColorEnum color = piece.getColor();
+                        String colorFolder;
+                        if (color.getID() == 1)
+                            colorFolder = "blue";
+                        else
+                            colorFolder = "black";
+
+                        PieceIDEnum name = board.getBoard()[row][col].getPiece().getId();
+
+                        String path = "/icons/" + colorFolder + "/" + name.getID() + ".svg";
+
+                        System.out.println(getClass().getResource(path));
+                        final BufferedImage image = ImageIO.read(getClass().getResource("/icons/blue/pawn.jpeg"));
+                        add(new JLabel(new ImageIcon(image)));
+                    }
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+
+            private void drawTile(){
 
             }
-    }
-
-    public static void main(String[] args){
-        Board temp = new Board();
     }
 //    private void createBoard() {
 //        JFrame frame = new JFrame();
