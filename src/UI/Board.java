@@ -9,11 +9,14 @@ public class Board extends JPanel {
     private final int HEIGHT = 8;
     private UI ui;
     private JButton[][] grid = new JButton[WIDTH][HEIGHT];
-
     private void createBoard() {
         JFrame frame = new JFrame();
         JPanel panel = new JPanel(new GridLayout(8, 8, 0, 0));
         Insets buttonMargin = new Insets(0, 0, 0, 0);
-
+    }
+    private void createBoard() {
+        JFrame frame = new JFrame(); // another Jframe? What is the difference between this one and the one on the UI?
+        JPanel panel = new JPanel(new GridLayout(8, 8, 0, 0));
+        Insets buttonMargin = new Insets(0, 0, 0, 0);
     }
 }
