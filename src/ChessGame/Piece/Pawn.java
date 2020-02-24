@@ -2,7 +2,7 @@ package ChessGame.Piece;
 
 import ChessGame.ChessBoard;
 import ChessGame.ColorEnum;
-import ChessGame.Position.AbstractPosition;
+import ChessGame.Position.Position;
 
 import java.util.ArrayList;
 
@@ -21,9 +21,9 @@ public class Pawn extends Piece {
         }
     }
     @Override
-    public ArrayList<Move> getMoveSet(ChessBoard board, AbstractPosition position) {
+    public ArrayList<Move> getMoveSet(ChessBoard board, Position position) {
         ArrayList<Move> moveSet = new ArrayList<>();
-        AbstractPosition[][] grid = board.getBoard();
+        Position[][] grid = board.getBoard();
         int row = position.getX();
         int col = position.getY();
         Coord from = new Coord(row, col);
@@ -34,13 +34,13 @@ public class Pawn extends Piece {
             moveSet.add(new Move(from, new Coord(row + offset*2, col)));
         }
         if (board.inBound(row + offset, col + left)){
-            AbstractPosition aheadAndLeft = grid[row + offset][col+left];
+            Position aheadAndLeft = grid[row + offset][col+left];
             if (!(aheadAndLeft.isEmpty()) && aheadAndLeft.getPiece().getColor().getID() != color.getID()){
                 moveSet.add(new Move(from, new Coord(row + offset, col + left)));
             }
         }
         if(board.inBound(row + offset, col + right)){
-            AbstractPosition aheadAndRight = grid[row + offset][col + right];
+            Position aheadAndRight = grid[row + offset][col + right];
             if (!(aheadAndRight.isEmpty()) && aheadAndRight.getPiece().getColor().getID() != color.getID()){
                 moveSet.add(new Move(from, new Coord(row + offset, col + right)));
             }

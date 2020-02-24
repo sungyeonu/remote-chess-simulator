@@ -1,23 +1,23 @@
 package ChessGame.Piece;
 
 import ChessGame.ChessBoard;
-import ChessGame.Position.AbstractPosition;
+import ChessGame.Position.Position;
 import ChessGame.ColorEnum;
 import java.util.ArrayList;
 
 public abstract class Piece {
     protected ColorEnum color;
     protected PieceIDEnum id;
-    protected AbstractPosition position;
+    protected Position position;
     protected boolean hasMoved = false;
 
     public Piece(ColorEnum color){
         this.color = color;
     }
-    public void initPiece(AbstractPosition position){
+    public void initPiece(Position position){
         this.position = position;
     }
-    public abstract ArrayList<Move> getMoveSet(ChessBoard board, AbstractPosition position);
+    public abstract ArrayList<Move> getMoveSet(ChessBoard board, Position position);
     public ColorEnum getColor(){
         return color;
     }

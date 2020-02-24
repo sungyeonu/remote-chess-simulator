@@ -2,18 +2,21 @@ package UI;
 
 import ChessGame.ChessBoard;
 import ChessGame.ColorEnum;
+import ChessGame.Piece.Move;
 import ChessGame.Piece.Piece;
 import ChessGame.Piece.PieceIDEnum;
-import ChessGame.Position.AbstractPosition;
+import ChessGame.Position.Position;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
+
+import static javax.swing.SwingUtilities.isLeftMouseButton;
+import static javax.swing.SwingUtilities.isRightMouseButton;
 
 public class Board extends JPanel {
     private final int WIDTH = 640;
@@ -33,6 +36,10 @@ public class Board extends JPanel {
     private final Color GREEN = new Color(82,212,88);
     private final Color RED = new Color(221,65,65);
     private final Color DARK_BLUE = new Color(48,93,255);
+
+    private Position sourcePosition;
+    private Position destinationPosition;
+    private Piece piece;
 
     private ChessBoard board;
     private final JFrame gameFrame;
@@ -82,6 +89,50 @@ public class Board extends JPanel {
                 setPreferredSize(TILE_PANEL_DIMENSION);
                 assignTileColor();
                 assignTilePieceIcon(board);
+
+
+                addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (isRightMouseButton(e)){
+                            if (sourcePosition == null){
+                                sourcePosition = board.getPosition(row, col);
+                                piece = sourcePosition.getPiece();
+                                if (piece == null){
+                                    sourcePosition = null;
+                                }
+                            } else {
+                                destinationPosition = board.getPosition(row, col);
+                                final Move move = null;
+                            }
+
+                        } else if (isLeftMouseButton(e)){
+
+                        }
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                    }
+                });
+
+
                 validate();
             }
 
@@ -92,7 +143,7 @@ public class Board extends JPanel {
             private void assignTilePieceIcon(ChessBoard board){
                 this.removeAll();
                 try{
-                    AbstractPosition[][] grid = board.getBoard();
+                    Position[][] grid = board.getBoard();
                     if(!(grid[row][col].isEmpty())){
                         Piece piece = board.getBoard()[row][col].getPiece();
                         ColorEnum color = piece.getColor();
@@ -104,10 +155,8 @@ public class Board extends JPanel {
 
                         PieceIDEnum name = board.getBoard()[row][col].getPiece().getId();
 
-                        String path = "/icons/" + colorFolder + "/" + name.getID() + ".svg";
-
-                        System.out.println(getClass().getResource(path));
-                        final BufferedImage image = ImageIO.read(getClass().getResource("/icons/blue/pawn.jpeg"));
+                        String path = "/icons/" + colorFolder + "/" + name.getID() + ".gif";
+                        final BufferedImage image = ImageIO.read(getClass().getResource(path));
                         add(new JLabel(new ImageIcon(image)));
                     }
                 } catch (IOException e){

@@ -2,7 +2,7 @@ package ChessGame.Piece;
 
 import ChessGame.ChessBoard;
 import ChessGame.ColorEnum;
-import ChessGame.Position.AbstractPosition;
+import ChessGame.Position.Position;
 
 import java.util.ArrayList;
 
@@ -13,8 +13,8 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public ArrayList<Move> getMoveSet(ChessBoard board, AbstractPosition position) {
-        AbstractPosition[][] grid = board.getBoard();
+    public ArrayList<Move> getMoveSet(ChessBoard board, Position position) {
+        Position[][] grid = board.getBoard();
         ArrayList<Move> moveSet = new ArrayList<Move>();
 
         int row = position.getX();

@@ -2,7 +2,7 @@ package ChessGame.Piece;
 
 import ChessGame.ChessBoard;
 import ChessGame.ColorEnum;
-import ChessGame.Position.AbstractPosition;
+import ChessGame.Position.Position;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ public class Queen extends Piece {
     }
 
     @Override
-    public ArrayList<Move> getMoveSet(ChessBoard board, AbstractPosition position) {
+    public ArrayList<Move> getMoveSet(ChessBoard board, Position position) {
         ArrayList<Move> moveSet = new ArrayList<>();
         ColorEnum clonedColor = position.getPiece().getColor();
 

@@ -1,20 +1,23 @@
 package ChessGame;
 
 import ChessGame.Piece.Coord;
+import ChessGame.Piece.Move;
 import ChessGame.Piece.PieceFactory;
 import ChessGame.Piece.PieceIDEnum;
-import ChessGame.Position.AbstractPosition;
-import ChessGame.Position.PositionImpl;
-
-import java.awt.*;
+import ChessGame.Position.Position;
 
 public class ChessBoard {
     private PieceFactory pieceFactory = new PieceFactory();
     private final static int BOARD_ROWS = 8;
     private final static int BOARD_COLS = 8;
-    private AbstractPosition[][] grid;
+    private Position[][] grid;
+
+    private Player blue;
+    private Player black;
     public ChessBoard(){
-        grid = new AbstractPosition[BOARD_ROWS][BOARD_COLS];
+        grid = new Position[BOARD_ROWS][BOARD_COLS];
+        blue = new Player(ColorEnum.BLUE);
+        black = new Player(ColorEnum.BLACK);
         initBoard();
         initBlack(ColorEnum.BLACK);
         initBlue(ColorEnum.BLUE);
@@ -22,7 +25,7 @@ public class ChessBoard {
     public void initBoard(){
         for (int i = 0 ; i < BOARD_COLS; i++){
             for (int j = 0 ; j < BOARD_ROWS; j++){
-                grid[i][j] = new PositionImpl(new Coord(i,j));
+                grid[i][j] = new Position(new Coord(i,j));
             }
         }
     }
@@ -54,11 +57,11 @@ public class ChessBoard {
         grid[7][3].setPiece(pieceFactory.makeQueen(color));
         grid[7][4].setPiece(pieceFactory.makeKing(color));
     }
-    public AbstractPosition[][] getBoard(){
+    public Position[][] getBoard(){
         return grid;
     }
 
-    public AbstractPosition getPosition(int x, int y){
+    public Position getPosition(int x, int y){
         return grid[x][y];
     }
     public boolean inBound(int x, int y){
@@ -80,6 +83,9 @@ public class ChessBoard {
             }
             System.out.println();
         }
+
+    }
+    public void makeMove(Move move){
 
     }
     public static void main(String[] args){

@@ -3,11 +3,11 @@ package ChessGame.Position;
 import ChessGame.Piece.Coord;
 import ChessGame.Piece.Piece;
 
-public class AbstractPosition {
+public class Position {
     Coord coord;
     Piece piece = null;
     boolean empty = true;
-    public AbstractPosition(Coord coord){
+    public Position(Coord coord){
         this.coord = coord;
     }
     public void setPiece(Piece piece){
