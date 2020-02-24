@@ -12,4 +12,11 @@ public class Coord {
     public int getY(){
         return y;
     }
+    public static boolean checkEquality(Coord one, Coord two){
+        if ((one.getX() == two.getX()) && one.getY() == two.getY()){
+            return true;
+        } else{
+            return false;
+        }
+    }
 }

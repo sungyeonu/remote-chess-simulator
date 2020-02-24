@@ -39,7 +39,7 @@ public class Knight extends Piece {
         if (board.inBound(row + 1, col - 2)){
             if (grid[row + 1][col - 2].isEmpty()){
                 moveSet.add(new Move(from, new Coord(row + 1, col - 2)));
-            } else if (grid[row - 1][col + 2].getPiece().getColor().getID() != color.getID()){
+            } else if (grid[row + 1][col - 2].getPiece().getColor().getID() != color.getID()){
                 moveSet.add(new Move(from, new Coord(row + 1, col - 2)));
             }
         }

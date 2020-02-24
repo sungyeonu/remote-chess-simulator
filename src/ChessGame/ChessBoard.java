@@ -1,9 +1,6 @@
 package ChessGame;
 
-import ChessGame.Piece.Coord;
-import ChessGame.Piece.Move;
-import ChessGame.Piece.PieceFactory;
-import ChessGame.Piece.PieceIDEnum;
+import ChessGame.Piece.*;
 import ChessGame.Position.Position;
 
 public class ChessBoard {
@@ -61,6 +58,9 @@ public class ChessBoard {
         return grid;
     }
 
+    public ChessBoard getChessBoard(){
+        return this;
+    }
     public Position getPosition(int x, int y){
         return grid[x][y];
     }
@@ -86,7 +86,22 @@ public class ChessBoard {
 
     }
     public void makeMove(Move move){
+        Coord from = move.getFrom();
+        Coord to = move.getTo();
 
+        int fromX = from.getX();
+        int fromY = from.getY();
+        int toX = to.getX();
+        int toY = to.getY();
+
+        Piece selectedPiece = grid[fromX][fromY].getPiece();
+        grid[fromX][fromY].setEmpty();
+
+        if (!(grid[toX][toY].isEmpty())) {
+            //TODO
+        }
+
+        grid[toX][toY].setPiece(selectedPiece);
     }
     public static void main(String[] args){
         ChessBoard board = new ChessBoard();

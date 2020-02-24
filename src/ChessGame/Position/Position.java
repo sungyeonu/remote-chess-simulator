@@ -26,6 +26,16 @@ public class Position {
     public int getY(){
         return coord.getY();
     }
+
+    public Coord getCoord() {
+        return coord;
+    }
+
+    public void setEmpty(){
+        empty = true;
+        piece = null;
+    }
+
     public Piece getPiece(){
         if (piece != null){
             return piece;
