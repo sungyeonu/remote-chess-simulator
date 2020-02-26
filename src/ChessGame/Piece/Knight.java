@@ -12,6 +12,7 @@ public class Knight extends Piece {
         this.id = PieceIDEnum.KNIGHT;
     }
 
+
     @Override
     public ArrayList<Move> getMoveSet(ChessBoard board, Position position) {
         ArrayList<Move> moveSet = new ArrayList<>();

@@ -33,6 +33,9 @@ public class Pawn extends Piece {
             moveSet.add(new Move(from, new Coord(row + offset, col)));
             moveSet.add(new Move(from, new Coord(row + offset*2, col)));
         }
+        if(hasMoved == true){
+            moveSet.add(new Move(from, new Coord(row + offset, col)));
+        }
         if (board.inBound(row + offset, col + left)){
             Position aheadAndLeft = grid[row + offset][col+left];
             if (!(aheadAndLeft.isEmpty()) && aheadAndLeft.getPiece().getColor().getID() != color.getID()){

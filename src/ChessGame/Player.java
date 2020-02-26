@@ -7,4 +7,7 @@ public class Player {
     public Player(ColorEnum color){
         this.color = color;
     }
+    public ColorEnum getColor(){
+        return color;
+    }
 }

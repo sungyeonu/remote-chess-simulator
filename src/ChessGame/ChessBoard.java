@@ -3,6 +3,10 @@ package ChessGame;
 import ChessGame.Piece.*;
 import ChessGame.Position.Position;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class ChessBoard {
     private PieceFactory pieceFactory = new PieceFactory();
     private final static int BOARD_ROWS = 8;
@@ -11,6 +15,11 @@ public class ChessBoard {
 
     private Player blue;
     private Player black;
+
+    private ArrayList<Piece> bluePieces = new ArrayList<>();
+    private ArrayList<Piece> blackPieces = new ArrayList<>();
+    private Player playerTurn; //1 = blue, //2 = black
+
     public ChessBoard(){
         grid = new Position[BOARD_ROWS][BOARD_COLS];
         blue = new Player(ColorEnum.BLUE);
@@ -18,6 +27,7 @@ public class ChessBoard {
         initBoard();
         initBlack(ColorEnum.BLACK);
         initBlue(ColorEnum.BLUE);
+        playerTurn = blue;
     }
     public void initBoard(){
         for (int i = 0 ; i < BOARD_COLS; i++){
@@ -30,29 +40,55 @@ public class ChessBoard {
         int row = 1;
         for (int i = 0; i < 8 ; i++){
             grid[row][i].setPiece(pieceFactory.makePawn(color));
+            blackPieces.add(pieceFactory.makePawn(color));
         }
         grid[0][0].setPiece(pieceFactory.makeRook(color));
         grid[0][7].setPiece(pieceFactory.makeRook(color));
+        blackPieces.add(pieceFactory.makeRook(color));
+        blackPieces.add(pieceFactory.makeRook(color));
+
         grid[0][1].setPiece(pieceFactory.makeKnight(color));
         grid[0][6].setPiece(pieceFactory.makeKnight(color));
+        blackPieces.add(pieceFactory.makeKnight(color));
+        blackPieces.add(pieceFactory.makeKnight(color));
+
         grid[0][2].setPiece(pieceFactory.makeBishop(color));
         grid[0][5].setPiece(pieceFactory.makeBishop(color));
+        blackPieces.add(pieceFactory.makeBishop(color));
+        blackPieces.add(pieceFactory.makeBishop(color));
+
         grid[0][3].setPiece(pieceFactory.makeQueen(color));
+        blackPieces.add(pieceFactory.makeQueen(color));
+
         grid[0][4].setPiece(pieceFactory.makeKing(color));
+        blackPieces.add(pieceFactory.makeKing(color));
     }
     public void initBlue(ColorEnum color){ //bottom of board
         int row = 6;
         for (int i = 0; i < 8 ; i++){
             grid[row][i].setPiece(pieceFactory.makePawn(color));
+            bluePieces.add(pieceFactory.makePawn(color));
         }
         grid[7][0].setPiece(pieceFactory.makeRook(color));
         grid[7][7].setPiece(pieceFactory.makeRook(color));
+        bluePieces.add(pieceFactory.makeRook(color));
+        bluePieces.add(pieceFactory.makeRook(color));
+
         grid[7][1].setPiece(pieceFactory.makeKnight(color));
         grid[7][6].setPiece(pieceFactory.makeKnight(color));
+        bluePieces.add(pieceFactory.makeKnight(color));
+        bluePieces.add(pieceFactory.makeKnight(color));
+
         grid[7][2].setPiece(pieceFactory.makeBishop(color));
         grid[7][5].setPiece(pieceFactory.makeBishop(color));
+        bluePieces.add(pieceFactory.makeBishop(color));
+        bluePieces.add(pieceFactory.makeBishop(color));
+
         grid[7][3].setPiece(pieceFactory.makeQueen(color));
+        bluePieces.add(pieceFactory.makeQueen(color));
+
         grid[7][4].setPiece(pieceFactory.makeKing(color));
+        bluePieces.add(pieceFactory.makeKing(color));
     }
     public Position[][] getBoard(){
         return grid;
@@ -95,16 +131,65 @@ public class ChessBoard {
         int toY = to.getY();
 
         Piece selectedPiece = grid[fromX][fromY].getPiece();
+        selectedPiece.setHasMoved(true);
         grid[fromX][fromY].setEmpty();
 
         if (!(grid[toX][toY].isEmpty())) {
-            //TODO
+            Piece removedPiece = grid[toX][toY].getPiece();
+            removePiece(removedPiece);
         }
 
         grid[toX][toY].setPiece(selectedPiece);
     }
-    public static void main(String[] args){
-        ChessBoard board = new ChessBoard();
-        board.print();
+
+    private void removePiece(Piece piece){
+        ColorEnum id = piece.getColor();
+        piece.getId();
+        if (id == ColorEnum.BLUE){
+            for (Piece x : bluePieces){
+                if (x.getId() == piece.getId()){
+                    bluePieces.remove(x);
+                    break;
+                }
+            }
+        } else {
+            for (Piece x : blackPieces){
+                if (x.getId() == piece.getId()){
+                    blackPieces.remove(x);
+                    break;
+                }
+            }
+        }
     }
+
+    public boolean checkBlueLife(){
+        for (Piece x : bluePieces){
+            if (x.getId() == PieceIDEnum.KING){
+                System.out.println("True");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkBlackLife(){
+        for (Piece x : blackPieces){
+            if (x.getId() == PieceIDEnum.KING){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void switchTurn(){
+        if (playerTurn == blue)
+            playerTurn = black;
+        else
+            playerTurn = blue;
+    }
+
+    public Player getPlayerTurn(){
+        return playerTurn;
+    }
+
 }

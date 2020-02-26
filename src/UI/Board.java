@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -42,6 +43,9 @@ public class Board extends JPanel {
     private Position sourcePosition = null;
     private Position destinationPosition = null;
     private Piece selectedPiece = null;
+    private int selectedPieceX = -1;
+    private int selectedPieceY = -1;
+
 
     private ChessBoard board;
     private final JFrame gameFrame;
@@ -114,9 +118,16 @@ public class Board extends JPanel {
                             if (sourcePosition == null){
                                 sourcePosition = board.getPosition(row, col);
                                 selectedPiece = sourcePosition.getPiece();
-                                System.out.println(selectedPiece.getId());
                                 if (selectedPiece == null){
                                     sourcePosition = null;
+                                } else {
+                                    if (selectedPiece.getColor().getID() == board.getPlayerTurn().getColor().getID()) {
+                                        selectedPieceX = row;
+                                        selectedPieceY = col;
+                                    } else {
+                                        selectedPiece = null;
+                                        sourcePosition = null;
+                                    }
                                 }
                             } else {
                                 destinationPosition = board.getPosition(row, col);
@@ -128,22 +139,24 @@ public class Board extends JPanel {
                                     Coord checkFrom = x.getFrom();
                                     Coord checkTo = x.getTo();
                                     if (Coord.checkEquality(from, checkFrom) && Coord.checkEquality(to, checkTo)) {
-                                        System.out.println("fromX: " + from.getX() + "fromY: " + from.getY() +
-                                                "\ntoX: " + to.getX() + "toY: " + to.getY());
                                         board.makeMove(x);
-                                        System.out.println("True");
+                                        board.switchTurn();
                                         break;
                                     }
                                     board = board.getChessBoard();
                                 }
                                 resetClickedPositionAndPieces();
-                                SwingUtilities.invokeLater(new Runnable() {
-                                    @Override
-                                    public void run() {
+                            }
+                            SwingUtilities.invokeLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (board.checkBlackLife() == false || board.checkBlueLife() == false){
+                                        System.out.println("Game Over");
+                                    } else {
                                         boardPanel.drawBoard(board);
                                     }
-                                });
-                            }
+                                }
+                            });
                         }
                     }
 
@@ -170,6 +183,40 @@ public class Board extends JPanel {
 
 
                 validate();
+            }
+            private void highlightLegalMoves(final ChessBoard board){
+                if (selectedPiece != null) {
+                    if (selectedPiece.getColor() == board.getPlayerTurn().getColor()) {
+                        for (final Move move : selectedPiece.getMoveSet(board, sourcePosition)) {
+                            Coord to = move.getTo();
+                            int x = to.getX();
+                            int y = to.getY();
+                            System.out.println("toX: " + x + "toY: " + y);
+                            System.out.println("row: " + row + "col: " + col);
+                            if ((x == row) && (y == col)) {
+                                try {
+                                    final BufferedImage image = ImageIO.read(getClass().getResource("/icons/misc/green_dot.png"));
+                                    add(new JLabel(new ImageIcon(image)));
+                                } catch (final IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            private void highlightTile(final ChessBoard board) {
+                if(selectedPiece != null && selectedPiece.getColor() == board.getPlayerTurn().getColor()){
+                    if (row == selectedPieceX && col == selectedPieceY) {
+                        if (board.getPlayerTurn().getColor() == ColorEnum.BLUE) {
+                            setBorder(BorderFactory.createLineBorder(Color.cyan, 3));
+                        } else
+                            setBorder(BorderFactory.createLineBorder(Color.black, 3));
+                    } else {
+                        setBorder(null);
+                    }
+                }
             }
 
             private void resetClickedPositionAndPieces(){
@@ -208,6 +255,8 @@ public class Board extends JPanel {
             public void drawSquarePanel(ChessBoard board){
                 assignTileColor();
                 assignTilePieceIcon(board);
+                highlightTile(board);
+                highlightLegalMoves(board);
                 validate();
                 repaint();
             }

@@ -24,39 +24,47 @@ public class Bishop extends Piece {
 
         //North-West Diagonal
         for (rowIndex = row - 1, colIndex = col - 1; colIndex >= 0 && rowIndex >= 0; colIndex--, rowIndex--){
-            if(grid[colIndex][rowIndex].isEmpty()){
-                moveSet.add(new Move(from, new Coord(colIndex, rowIndex)));
-            } else if (grid[colIndex][rowIndex].getPiece().getColor().getID() != color.getID()){
-                moveSet.add(new Move(from, new Coord(colIndex, rowIndex)));
+            if(grid[rowIndex][colIndex].isEmpty()){
+                moveSet.add(new Move(from, new Coord(rowIndex, colIndex)));
+            } else if (grid[rowIndex][colIndex].getPiece().getColor().getID() != color.getID()){
+                moveSet.add(new Move(from, new Coord(rowIndex, colIndex)));
+                break;
+            } else {
                 break;
             }
         }
 
         //North-East Diagonal
         for (rowIndex = row - 1, colIndex = col + 1; colIndex <= 7 && rowIndex >= 0; colIndex ++, rowIndex--){
-            if(grid[colIndex][rowIndex].isEmpty()){
-                moveSet.add(new Move(from, new Coord(colIndex, rowIndex)));
-            } else if (grid[colIndex][rowIndex].getPiece().getColor().getID() != color.getID()){
-                moveSet.add(new Move(from, new Coord(colIndex, rowIndex)));
+            if(grid[rowIndex][colIndex].isEmpty()){
+                moveSet.add(new Move(from, new Coord(rowIndex, colIndex)));
+            } else if (grid[rowIndex][colIndex].getPiece().getColor().getID() != color.getID()){
+                moveSet.add(new Move(from, new Coord(rowIndex, colIndex)));
+                break;
+            } else {
                 break;
             }
         }
 
         //South-west Diagonal
         for (rowIndex = row + 1, colIndex = col - 1; colIndex >= 0 && rowIndex <= 7; colIndex --, rowIndex++){
-            if(grid[colIndex][rowIndex].isEmpty()){
-                moveSet.add(new Move(from, new Coord(colIndex, rowIndex)));
-            } else if (grid[colIndex][rowIndex].getPiece().getColor().getID() != color.getID()){
-                moveSet.add(new Move(from, new Coord(colIndex, rowIndex)));
+            if(grid[rowIndex][colIndex].isEmpty()){
+                moveSet.add(new Move(from, new Coord(rowIndex, colIndex)));
+            } else if (grid[rowIndex][colIndex].getPiece().getColor().getID() != color.getID()){
+                moveSet.add(new Move(from, new Coord(rowIndex, colIndex)));
+                break;
+            } else {
                 break;
             }
         }
         //South-east Diagonal
         for (rowIndex = row + 1, colIndex = col + 1; colIndex <= 7 && rowIndex <= 7; colIndex ++, rowIndex++){
-            if(grid[colIndex][rowIndex].isEmpty()){
-                moveSet.add(new Move(from, new Coord(colIndex, rowIndex)));
-            } else if (grid[colIndex][rowIndex].getPiece().getColor().getID() != color.getID()){
-                moveSet.add(new Move(from, new Coord(colIndex, rowIndex)));
+            if(grid[rowIndex][colIndex].isEmpty()){
+                moveSet.add(new Move(from, new Coord(rowIndex, colIndex)));
+            } else if (grid[rowIndex][colIndex].getPiece().getColor().getID() != color.getID()){
+                moveSet.add(new Move(from, new Coord(rowIndex, colIndex)));
+                break;
+            } else {
                 break;
             }
         }
