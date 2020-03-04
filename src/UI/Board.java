@@ -2,10 +2,7 @@ package UI;
 
 import ChessGame.ChessBoard;
 import ChessGame.ColorEnum;
-import ChessGame.Piece.Coord;
-import ChessGame.Piece.Move;
-import ChessGame.Piece.Piece;
-import ChessGame.Piece.PieceIDEnum;
+import ChessGame.Piece.*;
 import ChessGame.Position.Position;
 
 import javax.imageio.ImageIO;
@@ -50,7 +47,12 @@ public class Board extends JPanel {
     private ChessBoard board;
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
+    private boolean gameOver = false;
+    private ColorEnum winner = null;
 
+    private boolean promotePanel = false;
+    private Move movePromote = null;
+    private ColorEnum colorPromote = null;
     public Board(){
         this.gameFrame = new JFrame("Chess");
         this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
@@ -74,7 +76,7 @@ public class Board extends JPanel {
             super(new GridLayout(8, 8));
             this.squares = new SquarePanel[ROWS][COLS];
             for (int rows = 0; rows < ROWS; rows++) {
-                for (int cols = 0; cols < COLS; cols ++) {
+                for (int cols = 0; cols < COLS; cols++) {
                     final SquarePanel squarePanel = new SquarePanel(rows, cols);
                     squares[rows][cols] = squarePanel;
                     add(squarePanel);
@@ -83,17 +85,42 @@ public class Board extends JPanel {
             setPreferredSize(BOARD_PANEL_DIMENSON);
             validate();
         }
-        public void drawBoard(final ChessBoard board){
-            removeAll();
-            for (int rows = 0; rows < ROWS; rows++) {
-                for (int cols = 0; cols < COLS; cols ++) {
-                    final SquarePanel squarePanel = squares[rows][cols];
-                    squarePanel.drawSquarePanel(board);
-                    add(squarePanel);
+
+        public void drawBoard(final ChessBoard board) {
+            if (gameOver == false) {
+                if (promotePanel == true){
+                    removeAll();
+                    for (int num = 0; num < 4; num++){
+                        final PromotionPanel promotionPanel;
+                        try {
+                            promotionPanel = new PromotionPanel(num);
+                            add(promotionPanel);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    validate();
+                    repaint();
+                } else {
+                    removeAll();
+                    for (int rows = 0; rows < ROWS; rows++) {
+                        for (int cols = 0; cols < COLS; cols++) {
+                            final SquarePanel squarePanel = squares[rows][cols];
+                            squarePanel.drawSquarePanel(board);
+                            add(squarePanel);
+                        }
+                    }
+                    validate();
+                    repaint();
                 }
+            } else {
+                removeAll();
             }
-            validate();
-            repaint();
+        }
+        private void resetPromote(){
+            movePromote = null;
+            promotePanel = false;
+            colorPromote = null;
         }
     }
     private class SquarePanel extends JPanel{
@@ -114,7 +141,6 @@ public class Board extends JPanel {
                         if (isRightMouseButton(e)){
                             resetClickedPositionAndPieces();
                         } else if (isLeftMouseButton(e)){
-                            System.out.println("Left");
                             if (sourcePosition == null){
                                 sourcePosition = board.getPosition(row, col);
                                 selectedPiece = sourcePosition.getPiece();
@@ -140,6 +166,36 @@ public class Board extends JPanel {
                                     Coord checkTo = x.getTo();
                                     if (Coord.checkEquality(from, checkFrom) && Coord.checkEquality(to, checkTo)) {
                                         board.makeMove(x);
+                                        if(selectedPiece.getId() == PieceIDEnum.PAWN){
+                                            ColorEnum checkPromoteColor = selectedPiece.getColor();
+                                            boolean proceed = false;
+                                            int promoteXCoord = checkTo.getX();
+                                            int promoteYCoord = checkTo.getY();
+
+                                            if (checkPromoteColor.getID() == ColorEnum.BLUE.getID()){
+                                                if (promoteXCoord == 0 ){
+                                                    for (int i = 0; i < 8; i++){
+                                                        if (promoteYCoord == i){
+                                                            colorPromote = ColorEnum.BLUE;
+                                                            proceed = true;
+                                                        }
+                                                    }
+                                                }
+                                            } else if (checkPromoteColor.getID() == ColorEnum.BLACK.getID()){
+                                                if (promoteXCoord == 7 ){
+                                                    for (int i = 0; i < 8; i++){
+                                                        if (promoteYCoord == i){
+                                                            colorPromote = ColorEnum.BLACK;
+                                                            proceed = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            if (proceed){
+                                                movePromote = x;
+                                                promotePanel = true;
+                                            }
+                                        }
                                         board.switchTurn();
                                         break;
                                     }
@@ -150,9 +206,17 @@ public class Board extends JPanel {
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (board.checkBlackLife() == false || board.checkBlueLife() == false){
-                                        System.out.println("Game Over");
-                                    } else {
+                                    if (board.checkBlueLife() == false){
+                                        winner = ColorEnum.BLACK;
+                                        boardPanel.drawBoard(board);
+                                        gameOver = true;
+                                        System.out.println("Game Over, Winner = BLACK");
+                                    } else if (board.checkBlackLife() == false){
+                                        winner = ColorEnum.BLUE;
+                                        boardPanel.drawBoard(board);
+                                        gameOver = true;
+                                        System.out.println("Game Over, Winner = BLUE");
+                                    }else {
                                         boardPanel.drawBoard(board);
                                     }
                                 }
@@ -191,8 +255,6 @@ public class Board extends JPanel {
                             Coord to = move.getTo();
                             int x = to.getX();
                             int y = to.getY();
-                            System.out.println("toX: " + x + "toY: " + y);
-                            System.out.println("row: " + row + "col: " + col);
                             if ((x == row) && (y == col)) {
                                 try {
                                     final BufferedImage image = ImageIO.read(getClass().getResource("/icons/misc/green_dot.png"));
@@ -251,19 +313,109 @@ public class Board extends JPanel {
                     e.printStackTrace();
                 }
             }
+            private void highLightLastMove(final ChessBoard board){
+                if (board.begin() == true) {
+                    Move move = board.getLastMove();
+                    int lastX = move.getFrom().getX();
+                    int lastY = move.getFrom().getY();
+                    if (row == lastX && col == lastY) {
+                        setBorder(BorderFactory.createLineBorder(Color.gray, 3));
+                    } else {
+                        setBorder(null);
+                    }
+                }
+            }
 
             public void drawSquarePanel(ChessBoard board){
                 assignTileColor();
                 assignTilePieceIcon(board);
                 highlightTile(board);
+                highLightLastMove(board);
                 highlightLegalMoves(board);
                 validate();
                 repaint();
             }
     }
-//    private void createBoard() {
-//        JFrame frame = new JFrame();
-//        JPanel panel = new JPanel(new GridLayout(8, 8, 0, 0));
-//        Insets buttonMargin = new Insets(0, 0, 0, 0);
-//    }
+
+    private class PromotionPanel extends JPanel{
+        PromotionPanel(final int num) throws IOException {
+            super(new GridBagLayout());
+            int id = num;
+            setPreferredSize(TILE_PANEL_DIMENSION);
+
+            String colorFolder;
+            if (colorPromote.getID() == 1)
+                colorFolder = "blue";
+            else
+                colorFolder = "black";
+
+            String path = "/icons/" + colorFolder + "/";
+            switch (num){
+                case 0:
+                    path += "rook.gif";
+                    break;
+                case 1:
+                    path += "bishop.gif";
+                    break;
+                case 2:
+                    path += "queen.gif";
+                    break;
+                case 3:
+                    path += "knight.gif";
+                    break;
+            }
+            final BufferedImage image = ImageIO.read(getClass().getResource(path));
+            add(new JLabel(new ImageIcon(image)));
+            addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (isLeftMouseButton(e)) {
+                        switch (id){
+                            case 0:
+                                board.promotePiece(movePromote, PieceIDEnum.ROOK);
+                                break;
+                            case 1:
+                                board.promotePiece(movePromote, PieceIDEnum.BISHOP);
+                                break;
+                            case 2:
+                                board.promotePiece(movePromote, PieceIDEnum.QUEEN);
+                                break;
+                            case 3:
+                                board.promotePiece(movePromote, PieceIDEnum.KNIGHT);
+                                break;
+                        }
+                    }
+                    board = board.getChessBoard();
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            boardPanel.resetPromote();
+                            boardPanel.drawBoard(board);
+                        }
+                    });
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+
+                }
+            });
+        }
+    }
+
 }

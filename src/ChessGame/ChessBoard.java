@@ -20,6 +20,8 @@ public class ChessBoard {
     private ArrayList<Piece> blackPieces = new ArrayList<>();
     private Player playerTurn; //1 = blue, //2 = black
 
+    private Move lastMove = null;
+    private boolean begin = false;
     public ChessBoard(){
         grid = new Position[BOARD_ROWS][BOARD_COLS];
         blue = new Player(ColorEnum.BLUE);
@@ -140,6 +142,9 @@ public class ChessBoard {
         }
 
         grid[toX][toY].setPiece(selectedPiece);
+        lastMove = move;
+        if (begin == false)
+            begin = true;
     }
 
     private void removePiece(Piece piece){
@@ -165,7 +170,6 @@ public class ChessBoard {
     public boolean checkBlueLife(){
         for (Piece x : bluePieces){
             if (x.getId() == PieceIDEnum.KING){
-                System.out.println("True");
                 return true;
             }
         }
@@ -181,11 +185,26 @@ public class ChessBoard {
         return false;
     }
 
+    public Move getLastMove(){
+        return lastMove;
+    }
+
+    public boolean begin(){
+        return begin;
+    }
+
     public void switchTurn(){
         if (playerTurn == blue)
             playerTurn = black;
         else
             playerTurn = blue;
+    }
+
+    public void promotePiece(Move move, PieceIDEnum pieceIDEnum){
+        Coord to = move.getTo();
+        int toX = to.getX();
+        int toY = to.getY();
+
     }
 
     public Player getPlayerTurn(){
