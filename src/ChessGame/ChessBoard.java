@@ -147,6 +147,15 @@ public class ChessBoard {
             begin = true;
     }
 
+    private void addPiece(Piece piece){
+        ColorEnum id = piece.getColor();
+        piece.getId();
+        if (id == ColorEnum.BLUE){
+            bluePieces.add(piece);
+        } else {
+            blackPieces.add(piece);
+        }
+    }
     private void removePiece(Piece piece){
         ColorEnum id = piece.getColor();
         piece.getId();
@@ -200,10 +209,28 @@ public class ChessBoard {
             playerTurn = blue;
     }
 
-    public void promotePiece(Move move, PieceIDEnum pieceIDEnum){
+    public void promotePiece(Move move, PieceIDEnum pieceIDEnum, ColorEnum colorPromote){
         Coord to = move.getTo();
         int toX = to.getX();
         int toY = to.getY();
+        Piece promotedPiece = null;
+        Position position = grid[toX][toY];
+        switch(pieceIDEnum.getID()){
+            case "rook":
+                promotedPiece = new Rook(colorPromote);
+                break;
+            case "queen":
+                promotedPiece = new Queen(colorPromote);
+                break;
+            case "knight":
+                promotedPiece = new Knight(colorPromote);
+                break;
+            case "bishop":
+                promotedPiece = new Bishop(colorPromote);
+                break;
+        }
+        removePiece(position.getPiece());
+        grid[toX][toY].setPiece(promotedPiece);
 
     }
 

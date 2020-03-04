@@ -372,16 +372,16 @@ public class Board extends JPanel {
                     if (isLeftMouseButton(e)) {
                         switch (id){
                             case 0:
-                                board.promotePiece(movePromote, PieceIDEnum.ROOK);
+                                board.promotePiece(movePromote, PieceIDEnum.ROOK, colorPromote);
                                 break;
                             case 1:
-                                board.promotePiece(movePromote, PieceIDEnum.BISHOP);
+                                board.promotePiece(movePromote, PieceIDEnum.BISHOP, colorPromote);
                                 break;
                             case 2:
-                                board.promotePiece(movePromote, PieceIDEnum.QUEEN);
+                                board.promotePiece(movePromote, PieceIDEnum.QUEEN, colorPromote);
                                 break;
                             case 3:
-                                board.promotePiece(movePromote, PieceIDEnum.KNIGHT);
+                                board.promotePiece(movePromote, PieceIDEnum.KNIGHT, colorPromote);
                                 break;
                         }
                     }
