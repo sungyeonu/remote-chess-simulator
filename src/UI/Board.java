@@ -13,6 +13,8 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import static javax.swing.SwingUtilities.isLeftMouseButton;
@@ -53,7 +55,17 @@ public class Board extends JPanel {
     private boolean promotePanel = false;
     private Move movePromote = null;
     private ColorEnum colorPromote = null;
-    public Board(){
+
+    private ColorEnum player;
+    private ObjectInputStream socketIn;
+    private ObjectOutputStream socketOut;
+    private ColorEnum playerTurn;
+    public Board(ColorEnum player, ObjectInputStream socketIn, ObjectOutputStream socketOut){
+        this.player = player;
+        this.socketIn = socketIn;
+        this.socketOut = socketOut;
+        playerTurn = ColorEnum.BLUE;
+
         this.gameFrame = new JFrame("Chess");
         this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
         this.board = new ChessBoard();
@@ -135,6 +147,7 @@ public class Board extends JPanel {
                 assignTileColor();
                 assignTilePieceIcon(board);
 
+                //if player turn
                 addMouseListener(new MouseListener() {
                     @Override
                     public void mouseClicked(MouseEvent e) {

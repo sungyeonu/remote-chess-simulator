@@ -8,28 +8,33 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class Client {
-    private static final int PORT = 9001;
+    private static final int PORT = 9222;
     private static final String URL = "127.0.0.1";
 
     private Socket socket;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
-    //private ClientReader reader = null;
-    //private ClientWriter writer = null;
-    private Thread readerThread = null;
-    private Thread writerThread = null;
     public Client() throws IOException {
         try {
             connect(URL);
             socketOut = new ObjectOutputStream(socket.getOutputStream());
             socketIn = new ObjectInputStream(socket.getInputStream());
-            System.out.println("Connected");
+            System.out.println("Received A Connection");
+            readWriteLoop();
         } catch (Exception e){
             e.printStackTrace();
         }
         return;
     }
-
+    private void readWriteLoop() throws ClassNotFoundException, IOException {
+        Object obj = socketIn.readObject();
+        while (obj != null) {
+            System.out.println("Writing receieved object.");
+            socketOut.writeObject(obj);
+            socketOut.flush();
+            obj = socketIn.readObject();
+        }
+    }
     /**
      * Tries to connect to the given host on the internally held PORT variable, returning true upon
      * successful connection
@@ -39,6 +44,7 @@ public class Client {
     private boolean connect(String host) {
         try {
             socket = new Socket(host, PORT);
+            System.out.println("Connection to LocalHost on Port: " + PORT);
         }
         catch (IOException e) {
             return false;

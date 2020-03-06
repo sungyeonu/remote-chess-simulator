@@ -6,11 +6,11 @@ import java.io.IOException;
 
 public class Driver {
     public static void main(String[] args){
-          Board boardGUI = new Board();
-//        try {
-//            Client client = new Client();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+//          Board boardGUI = new Board();
+        try {
+            Client client = new Client();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
