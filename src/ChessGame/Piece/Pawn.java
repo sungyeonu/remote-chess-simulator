@@ -30,8 +30,14 @@ public class Pawn extends Piece {
         int left = -1;
         int right = 1;
         if (hasMoved == false){
-            moveSet.add(new Move(from, new Coord(row + offset, col)));
-            moveSet.add(new Move(from, new Coord(row + offset*2, col)));
+            Position oneAhead = grid[row + offset][ col];
+            Position twoAhead = grid[row + offset * 2][col];
+            if (oneAhead.isEmpty()){
+                moveSet.add(new Move(from, new Coord(row + offset, col)));
+                moveSet.add(new Move(from, new Coord(row + offset*2, col)));
+            } else {
+                moveSet.add(new Move(from, new Coord(row + offset, col)));
+            }
         }
         if(hasMoved == true){
             moveSet.add(new Move(from, new Coord(row + offset, col)));

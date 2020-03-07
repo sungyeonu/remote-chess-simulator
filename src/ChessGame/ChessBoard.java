@@ -18,18 +18,16 @@ public class ChessBoard {
 
     private ArrayList<Piece> bluePieces = new ArrayList<>();
     private ArrayList<Piece> blackPieces = new ArrayList<>();
-    private Player playerTurn; //1 = blue, //2 = black
+    private ColorEnum playerTurn; //1 = blue, //2 = black
 
     private Move lastMove = null;
     private boolean begin = false;
     public ChessBoard(){
         grid = new Position[BOARD_ROWS][BOARD_COLS];
-        blue = new Player(ColorEnum.BLUE);
-        black = new Player(ColorEnum.BLACK);
         initBoard();
         initBlack(ColorEnum.BLACK);
         initBlue(ColorEnum.BLUE);
-        playerTurn = blue;
+        playerTurn = ColorEnum.BLUE;
     }
     public void initBoard(){
         for (int i = 0 ; i < BOARD_COLS; i++){
@@ -203,10 +201,10 @@ public class ChessBoard {
     }
 
     public void switchTurn(){
-        if (playerTurn == blue)
-            playerTurn = black;
+        if (playerTurn.getID() == ColorEnum.BLUE.getID())
+            playerTurn = ColorEnum.BLACK;
         else
-            playerTurn = blue;
+            playerTurn = ColorEnum.BLUE;
     }
 
     public void promotePiece(Move move, PieceIDEnum pieceIDEnum, ColorEnum colorPromote){
@@ -234,7 +232,7 @@ public class ChessBoard {
 
     }
 
-    public Player getPlayerTurn(){
+    public ColorEnum getPlayerTurn(){
         return playerTurn;
     }
 

@@ -39,7 +39,7 @@ public class Server {
                 connection.start();
                 while(true){
                 }
-            } catch (IOException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 System.out.println("Error accepting connection on socket.");
                 return;
             }

@@ -1,6 +1,9 @@
 package ChessGame.Piece;
 
-public class Coord {
+import java.io.Serializable;
+
+public class Coord implements Serializable {
+    private static long serialversionUID = 1L;
     private int x, y;
     public Coord(int x, int y){
         this.x = x;

@@ -1,6 +1,8 @@
 package Network.Server;
 
+import ChessGame.ColorEnum;
 import ChessGame.Piece.Move;
+import UI.Board;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -14,26 +16,53 @@ public class Client {
     private Socket socket;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
+    private ColorEnum player;
     public Client() throws IOException {
         try {
             connect(URL);
             socketOut = new ObjectOutputStream(socket.getOutputStream());
             socketIn = new ObjectInputStream(socket.getInputStream());
             System.out.println("Received A Connection");
-            readWriteLoop();
+            player = ColorEnum.BLACK;
+            startGame();
         } catch (Exception e){
             e.printStackTrace();
         }
         return;
     }
-    private void readWriteLoop() throws ClassNotFoundException, IOException {
-        Object obj = socketIn.readObject();
-        while (obj != null) {
-            System.out.println("Writing receieved object.");
-            socketOut.writeObject(obj);
-            socketOut.flush();
-            obj = socketIn.readObject();
+    private void readWriteLoop(Board board) throws ClassNotFoundException, IOException {
+        while (true) {
+            if (board.listen == 1) {
+                Move obj = (Move) socketIn.readObject();
+                while (obj != null) {
+                    if (obj.getPiece() != null){
+                        promote(board, obj);
+                    } else {
+                        board.makeMove(obj);
+                        obj = null;
+                        board.listen = 0;
+                    }
+                }
+            } else {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    System.out.println(e);
+                }
+            }
         }
+    }
+
+    private void promote(Board board, Move move){
+        int fromX = move.getFrom().getX();
+        int fromY = move.getFrom().getY();
+        board.getBoard().getPosition(fromX, fromY).setEmpty();
+        board.getBoard().promotePiece(move, move.getPiece(), ColorEnum.BLUE);
+        board.updateGUI();
+    }
+    private void startGame() throws IOException, ClassNotFoundException {
+        Board board = new Board(player, socketIn, socketOut);
+        readWriteLoop(board);
     }
     /**
      * Tries to connect to the given host on the internally held PORT variable, returning true upon

@@ -1,7 +1,11 @@
 package ChessGame.Piece;
 
-public class Move {
+import java.io.Serializable;
+
+public class Move implements Serializable {
+    private static long serialversionUID = 1L;
     private Coord from, to;
+    private PieceIDEnum id;
     public Move(Coord from, Coord to){
         this.from = from;
         this.to = to;
@@ -11,5 +15,11 @@ public class Move {
     }
     public Coord getTo(){
         return to;
+    }
+    public void setPiece(PieceIDEnum id){
+        this.id = id;
+    }
+    public PieceIDEnum getPiece(){
+        return id;
     }
 }

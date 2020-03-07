@@ -1,6 +1,7 @@
 package Network.Server;
 
 import ChessGame.ColorEnum;
+import ChessGame.Piece.Move;
 import UI.Board;
 
 import java.io.IOException;
@@ -28,10 +29,12 @@ public class ClientHandler implements Runnable{
      * IOException if there are problems with the clientSocket
      * @param clientSocket the Socket associated with the client being handled
      */
-    public ClientHandler(Socket clientSocket) throws IOException {
+    public ClientHandler(Socket clientSocket) throws IOException, ClassNotFoundException {
         this.clientSocket = clientSocket;
         this.socketOut = new ObjectOutputStream(clientSocket.getOutputStream());
         this.socketIn = new ObjectInputStream(clientSocket.getInputStream());
+        player = ColorEnum.BLUE;
+        startGame();
     }
 
     /**
@@ -39,16 +42,52 @@ public class ClientHandler implements Runnable{
      * with his opponent for the chess game
      */
 
-    private void startGame(){
+    private void startGame() throws IOException, ClassNotFoundException {
         Board board = new Board(player, socketIn, socketOut);
-
+        board.listen = 0;
+        readWriteLoop(board);
     }
-
+    private void readWriteLoop(Board board) throws ClassNotFoundException, IOException {
+        while (true) {
+            if (board.listen == 1){
+                Move obj = (Move) socketIn.readObject();
+                while (obj != null) {
+                    System.out.println("Received Move");
+                    if (obj.getPiece() != null){
+                        promote(board, obj);
+                    } else {
+                        board.makeMove(obj);
+                        obj = null;
+                        board.listen = 0;
+                    }
+                }
+            } else {
+                try{
+                    Thread.sleep(2000);
+                }catch(InterruptedException e){
+                    System.out.println(e);
+                }
+            }
+        }
+    }
+    private void promote(Board board, Move move){
+        int fromX = move.getFrom().getX();
+        int fromY = move.getFrom().getY();
+        board.getBoard().getPosition(fromX, fromY).setEmpty();
+        board.getBoard().promotePiece(move, move.getPiece(), ColorEnum.BLACK);
+        board.updateGUI();
+    }
     @Override
     public void run() {
         System.out.println("Received a connection!");
         player = ColorEnum.BLUE;
-        startGame();
+        try {
+            startGame();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 //        try {
 //            readWriteLoop();
 //        } catch (ClassNotFoundException e) {
@@ -56,7 +95,7 @@ public class ClientHandler implements Runnable{
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        cleanExit();
+//        cleanExit();
 //        try {
 //            gameID = socketIn.readInt();
 //        }
@@ -182,15 +221,7 @@ public class ClientHandler implements Runnable{
      * to the corresponding opponent's output stream. Should never throw a ClassNotFoundException,
      * but might throw an IOException if an error with either socket occurs
      */
-    private void readWriteLoop() throws ClassNotFoundException, IOException {
-        Object obj = socketIn.readObject();
-        while (obj != null) {
-            System.out.println("Writing receieved object.");
-            socketOut.writeObject(obj);
-            socketOut.flush();
-            obj = socketIn.readObject();
-        }
-    }
+
 
     private void cleanExit() {
         try {
