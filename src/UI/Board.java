@@ -78,8 +78,8 @@ public class Board extends JPanel {
         repaint();
         this.gameFrame.setVisible(true);
     }
-    public void updateGUI(){
-        board = board.getChessBoard();
+    public void updateGUI(ChessBoard board){
+        this.board = board;
         boardPanel.drawBoard(board);
     }
     public void makeMove(Move move) {
@@ -88,7 +88,6 @@ public class Board extends JPanel {
         board.switchTurn();
         playerTurn = board.getPlayerTurn();
         boardPanel.drawBoard(board);
-        boardPanel.validate();
     }
     public ChessBoard getBoard(){
             return board;
@@ -160,125 +159,6 @@ public class Board extends JPanel {
                 assignTileColor();
                 assignTilePieceIcon(board);
                 assignListener();
-//                if (playerTurn.getID() == player.getID()){
-//                    addMouseListener(new MouseListener() {
-//                        @Override
-//                        public void mouseClicked(MouseEvent e) {
-//                            if (isRightMouseButton(e)) {
-//                                resetClickedPositionAndPieces();
-//                            } else if (isLeftMouseButton(e)) {
-//                                if (sourcePosition == null) {
-//                                    sourcePosition = board.getPosition(row, col);
-//                                    selectedPiece = sourcePosition.getPiece();
-//                                    if (selectedPiece == null) {
-//                                        sourcePosition = null;
-//                                    } else {
-//                                        if (selectedPiece.getColor().getID() == board.getPlayerTurn().getID()) {
-//                                            selectedPieceX = row;
-//                                            selectedPieceY = col;
-//                                        } else {
-//                                            selectedPiece = null;
-//                                            sourcePosition = null;
-//                                        }
-//                                    }
-//                                } else {
-//                                    destinationPosition = board.getPosition(row, col);
-//                                    Coord from = sourcePosition.getCoord();
-//                                    Coord to = destinationPosition.getCoord();
-//                                    ArrayList<Move> moveSet = selectedPiece.getMoveSet(board, sourcePosition);
-//
-//                                    for (Move x : moveSet) {
-//                                        Coord checkFrom = x.getFrom();
-//                                        Coord checkTo = x.getTo();
-//                                        if (Coord.checkEquality(from, checkFrom) && Coord.checkEquality(to, checkTo)) {
-//                                            board.makeMove(x);
-//                                            if (selectedPiece.getId() == PieceIDEnum.PAWN) {
-//                                                ColorEnum checkPromoteColor = selectedPiece.getColor();
-//                                                boolean proceed = false;
-//                                                int promoteXCoord = checkTo.getX();
-//                                                int promoteYCoord = checkTo.getY();
-//
-//                                                if (checkPromoteColor.getID() == ColorEnum.BLUE.getID()) {
-//                                                    if (promoteXCoord == 0) {
-//                                                        for (int i = 0; i < 8; i++) {
-//                                                            if (promoteYCoord == i) {
-//                                                                colorPromote = ColorEnum.BLUE;
-//                                                                proceed = true;
-//                                                            }
-//                                                        }
-//                                                    }
-//                                                } else if (checkPromoteColor.getID() == ColorEnum.BLACK.getID()) {
-//                                                    if (promoteXCoord == 7) {
-//                                                        for (int i = 0; i < 8; i++) {
-//                                                            if (promoteYCoord == i) {
-//                                                                colorPromote = ColorEnum.BLACK;
-//                                                                proceed = true;
-//                                                            }
-//                                                        }
-//                                                    }
-//                                                }
-//                                                if (proceed) {
-//                                                    movePromote = x;
-//                                                    promotePanel = true;
-//                                                }
-//                                            }
-//                                            board.switchTurn();
-//                                            playerTurn = board.getPlayerTurn();
-//                                            try {
-//                                                socketOut.writeObject(x);
-//                                            } catch (IOException ex) {
-//                                                ex.printStackTrace();
-//                                            }
-//                                            break;
-//                                        }
-//                                        board = board.getChessBoard();
-//                                    }
-//                                    resetClickedPositionAndPieces();
-//                                }
-//                                SwingUtilities.invokeLater(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        if (board.checkBlueLife() == false) {
-//                                            winner = ColorEnum.BLACK;
-//                                            boardPanel.drawBoard(board);
-//                                            gameOver = true;
-//                                            System.out.println("Game Over, Winner = BLACK");
-//                                        } else if (board.checkBlackLife() == false) {
-//                                            winner = ColorEnum.BLUE;
-//                                            boardPanel.drawBoard(board);
-//                                            gameOver = true;
-//                                            System.out.println("Game Over, Winner = BLUE");
-//                                        } else {
-//                                            boardPanel.drawBoard(board);
-//                                        }
-//                                    }
-//                                });
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void mousePressed(MouseEvent e) {
-//
-//                        }
-//
-//                        @Override
-//                        public void mouseReleased(MouseEvent e) {
-//
-//                        }
-//
-//                        @Override
-//                        public void mouseEntered(MouseEvent e) {
-//
-//                        }
-//
-//                        @Override
-//                        public void mouseExited(MouseEvent e) {
-//
-//                        }
-//                    });
-//                } else {
-//                    listen = 1;
-//                }
                 validate();
             }
             private void assignListener(){
@@ -300,7 +180,7 @@ public class Board extends JPanel {
                                     if (selectedPiece == null) {
                                         sourcePosition = null;
                                     } else {
-                                        if (selectedPiece.getColor().getID() == board.getPlayerTurn().getID()) {
+                                        if (selectedPiece.getColor().getID() == player.getID()) {
                                             selectedPieceX = row;
                                             selectedPieceY = col;
                                         } else {
@@ -353,6 +233,7 @@ public class Board extends JPanel {
                                                 playerTurn = board.getPlayerTurn();
                                                 try {
                                                     socketOut.writeObject(x);
+                                                    socketOut.flush();
                                                 } catch (IOException ex) {
                                                     ex.printStackTrace();
                                                 }
@@ -430,7 +311,7 @@ public class Board extends JPanel {
             }
 
             private void highlightTile(final ChessBoard board) {
-                if(selectedPiece != null && selectedPiece.getColor().getID() == player.getID()){
+                if(selectedPiece != null){
                     if (row == selectedPieceX && col == selectedPieceY) {
                         if (player.getID() == ColorEnum.BLUE.getID()) {
                             setBorder(BorderFactory.createLineBorder(Color.cyan, 3));
@@ -491,9 +372,9 @@ public class Board extends JPanel {
                 assignTileColor();
                 assignTilePieceIcon(board);
                 assignListener();
-                highlightTile(board);
                 highLightLastMove(board);
                 highlightLegalMoves(board);
+                highlightTile(board);
                 validate();
                 repaint();
             }
@@ -532,6 +413,9 @@ public class Board extends JPanel {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (isLeftMouseButton(e)) {
+                        board.makeMove(movePromote);
+                        board.switchTurn();
+                        playerTurn = board.getPlayerTurn();
                         switch (id){
                             case 0:
                                 board.promotePiece(movePromote, PieceIDEnum.ROOK, colorPromote);
@@ -552,6 +436,7 @@ public class Board extends JPanel {
                         }
                         try {
                             socketOut.writeObject(movePromote);
+                            socketOut.flush();
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
