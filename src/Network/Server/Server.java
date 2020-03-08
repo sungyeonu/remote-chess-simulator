@@ -8,14 +8,14 @@ import java.net.Socket;
 public class Server {
     private static final int PORT = 9222;
     private static Thread connection = null;
+    private static ServerSocket socket;
 
-    public static void main(String args[]) {
-        ServerSocket socket;
+    public static void main(final String args[]) {
         try {
             socket = new ServerSocket(PORT);
             System.out.println("Server Started on \"LocalHost, Port: " + PORT + "\"");
         }
-        catch (IOException e) {
+        catch (final IOException e) {
             System.out.println("Couldn't create socket on port " + PORT);
             return;
         }

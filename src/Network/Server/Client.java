@@ -33,18 +33,18 @@ public class Client {
     }
     private void readWriteLoop(Board board) throws ClassNotFoundException, IOException {
         while (true) {
-            if (board.listen == 1) {
+            if (Board.listen == 1) {
                 Move obj = (Move) socketIn.readObject();
                 while (obj != null) {
                     if (obj.getPiece() != null){
                         board.makeMove(obj);
                         promote(board, obj);
                         obj = null;
-                        board.listen = 0;
+                        Board.listen = 0;
                     } else {
                         board.makeMove(obj);
                         obj = null;
-                        board.listen = 0;
+                        Board.listen = 0;
                     }
                 }
             } else {

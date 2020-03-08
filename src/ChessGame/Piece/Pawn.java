@@ -8,10 +8,8 @@ import java.util.ArrayList;
 
 public class Pawn extends Piece {
     private int offset;
-    private int displacementFromStartPosition;
-    private boolean enPassant = false;
 
-    public Pawn(ColorEnum color){
+    public Pawn(ColorEnum color) {
         super(color);
         this.id = PieceIDEnum.PAWN;
         if (color.getID() == 1){
@@ -31,8 +29,7 @@ public class Pawn extends Piece {
         int right = 1;
         if (hasMoved == false){
             Position oneAhead = grid[row + offset][ col];
-            Position twoAhead = grid[row + offset * 2][col];
-            if (oneAhead.isEmpty()){
+            if (oneAhead.isEmpty()) {
                 moveSet.add(new Move(from, new Coord(row + offset, col)));
                 moveSet.add(new Move(from, new Coord(row + offset*2, col)));
             } else {

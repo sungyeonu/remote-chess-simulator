@@ -3,7 +3,10 @@ package ChessGame.Piece;
 import java.io.Serializable;
 
 public class Move implements Serializable {
-    private static long serialversionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
     private Coord from, to;
     private PieceIDEnum id;
     public Move(Coord from, Coord to){

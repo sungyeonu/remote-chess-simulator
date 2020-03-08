@@ -3,7 +3,10 @@ package ChessGame.Piece;
 import java.io.Serializable;
 
 public class Coord implements Serializable {
-    private static long serialversionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
     private int x, y;
     public Coord(int x, int y){
         this.x = x;

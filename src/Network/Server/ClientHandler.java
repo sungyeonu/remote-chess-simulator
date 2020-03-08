@@ -11,14 +11,11 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable{
-    private Socket clientSocket;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
     private ColorEnum player;
 
-
     public ClientHandler(Socket clientSocket) throws IOException, ClassNotFoundException {
-        this.clientSocket = clientSocket;
         this.socketOut = new ObjectOutputStream(clientSocket.getOutputStream());
         this.socketIn = new ObjectInputStream(clientSocket.getInputStream());
         player = ColorEnum.BLUE;
@@ -27,12 +24,12 @@ public class ClientHandler implements Runnable{
 
     private void startGame() throws IOException, ClassNotFoundException {
         Board board = new Board(player, socketIn, socketOut);
-        board.listen = 0;
+        Board.listen = 0;
         readWriteLoop(board);
     }
     private void readWriteLoop(Board board) throws ClassNotFoundException, IOException {
         while (true) {
-            if (board.listen == 1) {
+            if (Board.listen == 1) {
                 Move obj = (Move) socketIn.readObject();
                 while (obj != null) {
                     if (obj.getPiece() != null){
@@ -40,11 +37,11 @@ public class ClientHandler implements Runnable{
 //                        board = board.getBoard();
                         promote(board, obj);
                         obj = null;
-                        board.listen = 0;
+                        Board.listen = 0;
                     } else {
                         board.makeMove(obj);
                         obj = null;
-                        board.listen = 0;
+                        Board.listen = 0;
                     }
                 }
             } else {
@@ -73,15 +70,5 @@ public class ClientHandler implements Runnable{
             e.printStackTrace();
         }
 
-    }
-
-    private void cleanExit() {
-        try {
-            clientSocket.close();
-        }
-        catch (IOException e) {
-            System.out.println("Error: couldn't close clientSocket.");
-            return;
-        }
     }
 }

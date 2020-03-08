@@ -3,42 +3,40 @@ package ChessGame;
 import ChessGame.Piece.*;
 import ChessGame.Position.Position;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class ChessBoard {
-    private PieceFactory pieceFactory = new PieceFactory();
+    private final PieceFactory pieceFactory = new PieceFactory();
     private final static int BOARD_ROWS = 8;
     private final static int BOARD_COLS = 8;
-    private Position[][] grid;
+    private final Position[][] grid;
 
-    private Player blue;
-    private Player black;
-
-    private ArrayList<Piece> bluePieces = new ArrayList<>();
-    private ArrayList<Piece> blackPieces = new ArrayList<>();
-    private ColorEnum playerTurn; //1 = blue, //2 = black
+    private final ArrayList<Piece> bluePieces = new ArrayList<>();
+    private final ArrayList<Piece> blackPieces = new ArrayList<>();
+    private ColorEnum playerTurn; // 1 = blue, //2 = black
 
     private Move lastMove = null;
     private boolean begin = false;
-    public ChessBoard(){
+
+    public ChessBoard() {
         grid = new Position[BOARD_ROWS][BOARD_COLS];
         initBoard();
         initBlack(ColorEnum.BLACK);
         initBlue(ColorEnum.BLUE);
         playerTurn = ColorEnum.BLUE;
     }
-    public void initBoard(){
-        for (int i = 0 ; i < BOARD_COLS; i++){
-            for (int j = 0 ; j < BOARD_ROWS; j++){
-                grid[i][j] = new Position(new Coord(i,j));
+
+    public void initBoard() {
+        for (int i = 0; i < BOARD_COLS; i++) {
+            for (int j = 0; j < BOARD_ROWS; j++) {
+                grid[i][j] = new Position(new Coord(i, j));
             }
         }
     }
-    public void initBlack(ColorEnum color){ //top of board
-        int row = 1;
-        for (int i = 0; i < 8 ; i++){
+
+    public void initBlack(final ColorEnum color) { // top of board
+        final int row = 1;
+        for (int i = 0; i < 8; i++) {
             grid[row][i].setPiece(pieceFactory.makePawn(color));
             blackPieces.add(pieceFactory.makePawn(color));
         }
@@ -63,9 +61,10 @@ public class ChessBoard {
         grid[0][4].setPiece(pieceFactory.makeKing(color));
         blackPieces.add(pieceFactory.makeKing(color));
     }
-    public void initBlue(ColorEnum color){ //bottom of board
-        int row = 6;
-        for (int i = 0; i < 8 ; i++){
+
+    public void initBlue(final ColorEnum color) { // bottom of board
+        final int row = 6;
+        for (int i = 0; i < 8; i++) {
             grid[row][i].setPiece(pieceFactory.makePawn(color));
             bluePieces.add(pieceFactory.makePawn(color));
         }
@@ -90,28 +89,32 @@ public class ChessBoard {
         grid[7][4].setPiece(pieceFactory.makeKing(color));
         bluePieces.add(pieceFactory.makeKing(color));
     }
-    public Position[][] getBoard(){
+
+    public Position[][] getBoard() {
         return grid;
     }
 
-    public ChessBoard getChessBoard(){
+    public ChessBoard getChessBoard() {
         return this;
     }
-    public Position getPosition(int x, int y){
+
+    public Position getPosition(final int x, final int y) {
         return grid[x][y];
     }
-    public boolean inBound(int x, int y){
-        if (x >= 0 && x <= 7 && y>=0 && y<=7){
+
+    public boolean inBound(final int x, final int y) {
+        if (x >= 0 && x <= 7 && y >= 0 && y <= 7) {
             return true;
         } else {
             return false;
         }
     }
-    public void print(){
-        for (int rows = 0; rows < BOARD_ROWS; rows ++){
-            for (int cols = 0; cols < BOARD_COLS; cols ++){
+
+    public void print() {
+        for (int rows = 0; rows < BOARD_ROWS; rows++) {
+            for (int cols = 0; cols < BOARD_COLS; cols++) {
                 if (!(grid[rows][cols].isEmpty())) {
-                    PieceIDEnum id = grid[rows][cols].getPiece().getId();
+                    final PieceIDEnum id = grid[rows][cols].getPiece().getId();
                     System.out.print(id.getID() + " ");
                 } else {
                     System.out.print("- ");
@@ -121,21 +124,22 @@ public class ChessBoard {
         }
 
     }
-    public void makeMove(Move move){
-        Coord from = move.getFrom();
-        Coord to = move.getTo();
 
-        int fromX = from.getX();
-        int fromY = from.getY();
-        int toX = to.getX();
-        int toY = to.getY();
+    public void makeMove(final Move move) {
+        final Coord from = move.getFrom();
+        final Coord to = move.getTo();
 
-        Piece selectedPiece = grid[fromX][fromY].getPiece();
+        final int fromX = from.getX();
+        final int fromY = from.getY();
+        final int toX = to.getX();
+        final int toY = to.getY();
+
+        final Piece selectedPiece = grid[fromX][fromY].getPiece();
         selectedPiece.setHasMoved(true);
         grid[fromX][fromY].setEmpty();
 
         if (!(grid[toX][toY].isEmpty())) {
-            Piece removedPiece = grid[toX][toY].getPiece();
+            final Piece removedPiece = grid[toX][toY].getPiece();
             removePiece(removedPiece);
         }
 
@@ -145,28 +149,19 @@ public class ChessBoard {
             begin = true;
     }
 
-    private void addPiece(Piece piece){
-        ColorEnum id = piece.getColor();
+    private void removePiece(final Piece piece) {
+        final ColorEnum id = piece.getColor();
         piece.getId();
-        if (id == ColorEnum.BLUE){
-            bluePieces.add(piece);
-        } else {
-            blackPieces.add(piece);
-        }
-    }
-    private void removePiece(Piece piece){
-        ColorEnum id = piece.getColor();
-        piece.getId();
-        if (id == ColorEnum.BLUE){
-            for (Piece x : bluePieces){
-                if (x.getId() == piece.getId()){
+        if (id == ColorEnum.BLUE) {
+            for (final Piece x : bluePieces) {
+                if (x.getId() == piece.getId()) {
                     bluePieces.remove(x);
                     break;
                 }
             }
         } else {
-            for (Piece x : blackPieces){
-                if (x.getId() == piece.getId()){
+            for (final Piece x : blackPieces) {
+                if (x.getId() == piece.getId()) {
                     blackPieces.remove(x);
                     break;
                 }
@@ -174,45 +169,45 @@ public class ChessBoard {
         }
     }
 
-    public boolean checkBlueLife(){
-        for (Piece x : bluePieces){
-            if (x.getId() == PieceIDEnum.KING){
+    public boolean checkBlueLife() {
+        for (final Piece x : bluePieces) {
+            if (x.getId() == PieceIDEnum.KING) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean checkBlackLife(){
-        for (Piece x : blackPieces){
-            if (x.getId() == PieceIDEnum.KING){
+    public boolean checkBlackLife() {
+        for (final Piece x : blackPieces) {
+            if (x.getId() == PieceIDEnum.KING) {
                 return true;
             }
         }
         return false;
     }
 
-    public Move getLastMove(){
+    public Move getLastMove() {
         return lastMove;
     }
 
-    public boolean begin(){
+    public boolean begin() {
         return begin;
     }
 
-    public void switchTurn(){
+    public void switchTurn() {
         if (playerTurn.getID() == ColorEnum.BLUE.getID())
             playerTurn = ColorEnum.BLACK;
         else
             playerTurn = ColorEnum.BLUE;
     }
 
-    public void promotePiece(Move move, PieceIDEnum pieceIDEnum, ColorEnum colorPromote){
-        Coord to = move.getTo();
-        int toX = to.getX();
-        int toY = to.getY();
+    public void promotePiece(final Move move, final PieceIDEnum pieceIDEnum, final ColorEnum colorPromote) {
+        final Coord to = move.getTo();
+        final int toX = to.getX();
+        final int toY = to.getY();
         Piece promotedPiece = null;
-        Position position = grid[toX][toY];
+        final Position position = grid[toX][toY];
         switch(pieceIDEnum.getID()){
             case "rook":
                 promotedPiece = new Rook(colorPromote);
