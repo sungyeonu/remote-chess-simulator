@@ -3,6 +3,8 @@ package ChessGame.Piece;
 import ChessGame.ChessBoard;
 import ChessGame.ColorEnum;
 import ChessGame.Position.Position;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
@@ -10,6 +12,7 @@ public class Rook extends Piece {
     public Rook(ColorEnum color) {
         super(color);
         this.id = PieceIDEnum.ROOK;
+        assertEquals(this.getId(), PieceIDEnum.ROOK);
     }
 
     @Override
@@ -66,4 +69,15 @@ public class Rook extends Piece {
         return moveSet;
     }
 
+}
+
+class RookTest {
+    @Test
+    public void CreateRookTest() {
+        Rook rook1 = new Rook(ColorEnum.BLUE);
+        Rook rook2 = new Rook(ColorEnum.BLACK);
+        PieceIDEnum rook1id = rook1.getId();
+        PieceIDEnum rook2id = rook1.getId();
+        assertEquals(rook2id, PieceIDEnum.ROOK);
+    }
 }
