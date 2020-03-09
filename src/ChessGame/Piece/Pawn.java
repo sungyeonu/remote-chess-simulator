@@ -28,16 +28,20 @@ public class Pawn extends Piece {
         int left = -1;
         int right = 1;
         if (hasMoved == false){
-            Position oneAhead = grid[row + offset][ col];
+            Position oneAhead = grid[row + offset][col];
+            Position twoAhead = grid [row + offset*2][col];
             if (oneAhead.isEmpty()) {
                 moveSet.add(new Move(from, new Coord(row + offset, col)));
-                moveSet.add(new Move(from, new Coord(row + offset*2, col)));
-            } else {
-                moveSet.add(new Move(from, new Coord(row + offset, col)));
+                if (twoAhead.isEmpty()) {
+                    moveSet.add(new Move(from, new Coord(row + offset * 2, col)));
+                }
             }
         }
         if(hasMoved == true){
-            moveSet.add(new Move(from, new Coord(row + offset, col)));
+            Position oneAhead = grid[row + offset][col];
+            if (oneAhead.isEmpty()) {
+                moveSet.add(new Move(from, new Coord(row + offset, col)));
+            }
         }
         if (board.inBound(row + offset, col + left)){
             Position aheadAndLeft = grid[row + offset][col+left];
